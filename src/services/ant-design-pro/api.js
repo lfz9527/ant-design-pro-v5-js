@@ -35,15 +35,10 @@ export async function login(body, options) {
 
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options) {
-  return (
-    request <
-    API.NoticeIconList >
-    ('/api/notices',
-    {
-      method: 'GET',
-      ...(options || {}),
-    })
-  );
+  return request('/api/notices', {
+    method: 'GET',
+    ...(options || {}),
+  });
 }
 
 /** 获取规则列表 GET /api/rule */
@@ -59,48 +54,33 @@ export async function rule(params, options) {
 
 /** 更新规则 PUT /api/rule */
 export async function updateRule(options) {
-  return (
-    request <
-    API.RuleListItem >
-    ('/api/rule',
-    {
-      method: 'POST',
-      data: {
-        method: 'update',
-        ...(options || {}),
-      },
-    })
-  );
+  return request('/api/rule', {
+    method: 'POST',
+    data: {
+      method: 'update',
+      ...(options || {}),
+    },
+  });
 }
 
 /** 新建规则 POST /api/rule */
 export async function addRule(options) {
-  return (
-    request <
-    API.RuleListItem >
-    ('/api/rule',
-    {
-      method: 'POST',
-      data: {
-        method: 'post',
-        ...(options || {}),
-      },
-    })
-  );
+  return request('/api/rule', {
+    method: 'POST',
+    data: {
+      method: 'post',
+      ...(options || {}),
+    },
+  });
 }
 
 /** 删除规则 DELETE /api/rule */
 export async function removeRule(options) {
-  return (
-    request < Record < string,
-    any >>
-      ('/api/rule',
-      {
-        method: 'POST',
-        data: {
-          method: 'delete',
-          ...(options || {}),
-        },
-      })
-  );
+  return request('/api/rule', {
+    method: 'POST',
+    data: {
+      method: 'delete',
+      ...(options || {}),
+    },
+  });
 }

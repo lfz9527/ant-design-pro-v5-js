@@ -1,9 +1,30 @@
-﻿import { message, notification } from 'antd';
+﻿import { history } from '@umijs/max';
+import { message, notification } from 'antd';
+import { getToken } from './utils/token';
+const loginPath = '/user/login';
 
-/**请求拦截之前，设置token */
-// const addToken = async () => {
-
-// };
+/** 请求拦截器拦截器：请求前设置全局Token */
+const addToken = async (config) => {
+  const tokenKey = getToken();
+  if (tokenKey && tokenKey !== null) {
+    // const headers = {
+    //   Authorization: `Bearer ${tokenKey}`,
+    // };
+    // console.log('配置文件', { ...config, headers });
+    // return { ...config, headers };
+    // console.log('config----', config);
+    config.headers['token'] = tokenKey;
+    return config;
+  } else {
+    // removeToken()
+    history.push(loginPath);
+    return { ...config };
+  }
+};
+/** 拦截器：请求获取数据后拦截处理 */
+const formatResponse = (response, _) => {
+  return response;
+};
 
 /**
  * @name 错误处理
@@ -71,25 +92,29 @@ export const errorConfig = {
   },
 
   // 请求拦截器
-  requestInterceptors: [
-    (config) => {
-      // 拦截请求配置，进行个性化处理。
-      // const url = config?.url?.concat('?token = 123');
-      // return { ...config, url };
-      return { ...config };
-    },
-  ],
+  requestInterceptors: [addToken],
+  // requestInterceptors: [
+  //   (config) => {
+  //     console.log('url------', config);
+  //     // 拦截请求配置，进行个性化处理。
+  //     // const url = config?.url?.concat('?token = 123');
+  //     // return { ...config, url };
+  //     return { ...config };
+  //   },
+  // ],
+  // 响应拦截器
+  responseInterceptors: [formatResponse],
 
   // 响应拦截器
-  responseInterceptors: [
-    (response) => {
-      // 拦截响应数据，进行个性化处理
-      const { data } = response;
+  // responseInterceptors: [
+  //   (response) => {
+  //     // 拦截响应数据，进行个性化处理
+  //     const { data } = response;
 
-      if (data?.success === false) {
-        message.error('请求失败！');
-      }
-      return response;
-    },
-  ],
+  //     if (data?.success === false) {
+  //       message.error('请求失败！');
+  //     }
+  //     return response;
+  //   },
+  // ],
 };

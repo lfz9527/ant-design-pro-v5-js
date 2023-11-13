@@ -1,15 +1,15 @@
 import { Footer } from '@/components';
-import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+// import { login } from '@/services/ant-design-pro/api';
+import { login } from '@/services/module/login';
+import { setToken } from '@/utils/token';
 import {
   AlipayCircleOutlined,
   LockOutlined,
-  MobileOutlined,
   TaobaoCircleOutlined,
   UserOutlined,
   WeiboCircleOutlined,
 } from '@ant-design/icons';
-import { LoginForm, ProFormCaptcha, ProFormText } from '@ant-design/pro-components';
+import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { FormattedMessage, Helmet, SelectLang, history, useIntl, useModel } from '@umijs/max';
 import { Alert, Tabs, message } from 'antd';
@@ -111,8 +111,9 @@ const Login = () => {
   const handleSubmit = async (values) => {
     try {
       // 登录
-      const msg = await login({ ...values });
-      if (msg.status === 'ok') {
+      const res = await login({ ...values });
+      if (res.msg === 'ok') {
+        setToken(res.data.token);
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
@@ -120,6 +121,7 @@ const Login = () => {
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
         const urlParams = new URL(window.location.href).searchParams;
+        console.log('urlParams----', urlParams);
         history.push(urlParams.get('redirect') || '/');
         return;
       }
@@ -190,13 +192,13 @@ const Login = () => {
                   defaultMessage: '账户密码登录',
                 }),
               },
-              {
-                key: 'mobile',
-                label: intl.formatMessage({
-                  id: 'pages.login.phoneLogin.tab',
-                  defaultMessage: '手机号登录',
-                }),
-              },
+              // {
+              //   key: 'mobile',
+              //   label: intl.formatMessage({
+              //     id: 'pages.login.phoneLogin.tab',
+              //     defaultMessage: '手机号登录',
+              //   }),
+              // },
             ]}
           />
 
@@ -257,7 +259,7 @@ const Login = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
+          {/* {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
           {type === 'mobile' && (
             <>
               <ProFormText
@@ -338,7 +340,7 @@ const Login = () => {
                 }}
               />
             </>
-          )}
+          )} */}
           {/* <div
             style={{
               marginBottom: 24,

@@ -1,4 +1,6 @@
-import { outLogin } from '@/services/ant-design-pro/api';
+// import { outLogin } from '@/services/ant-design-pro/api';
+import { outLogin } from '@/services/module/login';
+import { removeToken } from '@/utils/token';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { history, useModel } from '@umijs/max';
@@ -7,11 +9,11 @@ import { stringify } from 'querystring';
 import { useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
-
 export const AvatarName = () => {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
-  return <span className="anticon">{currentUser?.name}</span>;
+  // return <span className="anticon">{currentUser?.name}</span>;
+  return <span className="anticon">{currentUser?.username}</span>;
 };
 
 export const AvatarDropdown = ({ menu, children }) => {
@@ -20,6 +22,7 @@ export const AvatarDropdown = ({ menu, children }) => {
    */
   const loginOut = async () => {
     await outLogin();
+    removeToken();
     const { search, pathname } = window.location;
     const urlParams = new URL(window.location.href).searchParams;
     /** 此方法会跳转到 redirect 参数所在的位置 */
@@ -50,6 +53,8 @@ export const AvatarDropdown = ({ menu, children }) => {
     };
   });
   const { initialState, setInitialState } = useModel('@@initialState');
+
+  // console.log('initialState++++', initialState);
 
   const onMenuClick = useCallback(
     (event) => {
@@ -84,7 +89,11 @@ export const AvatarDropdown = ({ menu, children }) => {
 
   const { currentUser } = initialState;
 
-  if (!currentUser || !currentUser.name) {
+  // if (!currentUser || !currentUser.name) {
+  //   return loading;
+  // }
+
+  if (!currentUser || !currentUser.username) {
     return loading;
   }
 

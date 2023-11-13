@@ -86,14 +86,14 @@ const TableList = () => {
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
    *  */
-  const [createModalOpen, handleModalOpen] = useState < boolean > false;
+  const [createModalOpen, handleModalOpen] = useState(false);
   /**
    * @en-US The pop-up window of the distribution update window
    * @zh-CN 分布更新窗口的弹窗
    * */
-  const [updateModalOpen, handleUpdateModalOpen] = useState < boolean > false;
+  const [updateModalOpen, handleUpdateModalOpen] = useState(false);
 
-  const [showDetail, setShowDetail] = useState < boolean > false;
+  const [showDetail, setShowDetail] = useState(false);
 
   const actionRef = useRef();
   const [currentRow, setCurrentRow] = useState();

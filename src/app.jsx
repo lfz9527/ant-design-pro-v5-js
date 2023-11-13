@@ -1,10 +1,11 @@
 import { AvatarDropdown, AvatarName, Footer, Question, SelectLang } from '@/components';
-import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
+// import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
+import { getUserInfo as queryCurrentUser } from '@/services/module/login';
 import { LinkOutlined } from '@ant-design/icons';
-import { SettingDrawer } from '@ant-design/pro-components';
 import { Link, history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
+import { getToken } from './utils/token';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -15,24 +16,47 @@ export async function getInitialState() {
   // 请求用户数据
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser({
-        skipErrorHandler: true,
-      });
-      return msg.data;
+      // const msg = await queryCurrentUser({
+      //   skipErrorHandler: true,
+      // });
+      const res = await queryCurrentUser();
+      // console.log('res----', res);
+      return res.data;
     } catch (error) {
       history.push(loginPath);
     }
     return undefined;
   };
-  // 如果不是登录页面，执行
-  const { location } = history;
-  if (location.pathname !== loginPath) {
+  // 返回用户数据
+  const returnUserInfo = async () => {
     const currentUser = await fetchUserInfo();
+    // console.log('currentUser----', currentUser);
     return {
       fetchUserInfo,
-      currentUser,
+      currentUser: { ...currentUser, name: currentUser.username },
       settings: defaultSettings,
     };
+  };
+  const { location } = history;
+  const tokenKey = getToken();
+  // 如果已经有token了，跳转登录页面无效
+  if (location.pathname === loginPath && tokenKey) {
+    history.push('/Home/MainConsole');
+    const userInfo = await returnUserInfo();
+    return userInfo;
+  }
+
+  // 如果不是登录页面，执行
+  if (location.pathname !== loginPath) {
+    const userInfo = await returnUserInfo();
+    return userInfo;
+    // const currentUser = await fetchUserInfo();
+    // // console.log('currentUser----', currentUser);
+    // return {
+    //   fetchUserInfo,
+    //   currentUser: { ...currentUser, name: currentUser.username },
+    //   settings: defaultSettings,
+    // };
   }
   return {
     fetchUserInfo,
@@ -52,7 +76,7 @@ export const layout = ({ initialState, setInitialState }) => {
       },
     },
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.username,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -94,27 +118,27 @@ export const layout = ({ initialState, setInitialState }) => {
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
-    childrenRender: (children) => {
-      // if (initialState?.loading) return <PageLoading />;
-      return (
-        <>
-          {children}
-          {isDev && (
-            <SettingDrawer
-              disableUrlParams
-              enableDarkTheme
-              settings={initialState?.settings}
-              onSettingChange={(settings) => {
-                setInitialState((preInitialState) => ({
-                  ...preInitialState,
-                  settings,
-                }));
-              }}
-            />
-          )}
-        </>
-      );
-    },
+    // childrenRender: (children) => {
+    //   // if (initialState?.loading) return <PageLoading />;
+    //   return (
+    //     <>
+    //       {children}
+    //       {isDev && (
+    //         <SettingDrawer
+    //           disableUrlParams
+    //           enableDarkTheme
+    //           settings={initialState?.settings}
+    //           onSettingChange={(settings) => {
+    //             setInitialState((preInitialState) => ({
+    //               ...preInitialState,
+    //               settings,
+    //             }));
+    //           }}
+    //         />
+    //       )}
+    //     </>
+    //   );
+    // },
     ...initialState?.settings,
   };
 };

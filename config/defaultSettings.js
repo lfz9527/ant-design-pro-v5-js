@@ -10,7 +10,7 @@ const Settings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: '凹凸曼后台',
   pwa: true,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
   iconfontUrl: '',
@@ -19,5 +19,20 @@ const Settings = {
     //https://procomponents.ant.design/components/layout#%E9%80%9A%E8%BF%87-token-%E4%BF%AE%E6%94%B9%E6%A0%B7%E5%BC%8F
   },
 };
+
+// const Settings = {
+//   navTheme: 'light',
+//   primaryColor: '#007df1',
+//   layout: 'mix',
+//   contentWidth: 'Fluid',
+//   fixedHeader: false,
+//   fixSiderbar: true,
+//   pwa: false,
+//   // logo: '/logo-1.png',
+//   logo: false,
+//   headerHeight: 55,
+//   splitMenus: true,
+//   title: '凹凸曼管理后台',
+// };
 
 export default Settings;

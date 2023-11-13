@@ -12,52 +12,73 @@
  */
 export default [
   {
-    path: '/user',
+    path: '/User',
+    access: 'canDisplay',
     layout: false,
     routes: [
       {
         name: 'login',
-        path: '/user/login',
+        path: '/User/Login',
+        access: 'canDisplay',
         component: './User/Login',
       },
     ],
   },
   {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
+    path: '/',
+    redirect: '/Home/MainConsole',
   },
   {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
+    path: '/Home',
+    name: 'Home',
+    access: 'canDisplay',
+    // redirect: '/Home/MainConsole',
     routes: [
       {
-        path: '/admin',
-        redirect: '/admin/sub-page',
-      },
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        component: './Admin',
+        name: 'MainConsole',
+        path: '/Home/MainConsole',
+        icon: 'windows',
+        access: 'canDisplay',
+        component: './Home/MainConsole',
       },
     ],
   },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
-  {
-    path: '/',
-    redirect: '/welcome',
-  },
-  {
-    path: '*',
-    layout: false,
-    component: './404',
-  },
+  // {
+  //   path: '/welcome',
+  //   name: 'welcome',
+  //   icon: 'smile',
+  //   component: './Welcome',
+  // },
+  // {
+  //   path: '/admin',
+  //   name: 'admin',
+  //   icon: 'crown',
+  //   access: 'canAdmin',
+  //   routes: [
+  //     {
+  //       path: '/admin',
+  //       redirect: '/admin/sub-page',
+  //     },
+  //     {
+  //       path: '/admin/sub-page',
+  //       name: 'sub-page',
+  //       component: './Admin',
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: 'list.table-list',
+  //   icon: 'table',
+  //   path: '/list',
+  //   component: './TableList',
+  // },
+  // {
+  //   path: '/',
+  //   redirect: '/welcome',
+  // },
+  // {
+  //   path: '*',
+  //   layout: false,
+  //   component: './404',
+  // },
 ];
